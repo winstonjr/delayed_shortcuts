@@ -178,7 +178,9 @@ final class ShortcutListWindowController: NSWindowController, NSTableViewDataSou
         guard let window else { return }
         alert.beginSheetModal(for: window) { [weak self] response in
             guard response == .alertFirstButtonReturn, let self else { return }
-            self.shortcuts.remove(atOffsets: IndexSet(selected))
+            for index in selected.reversed() {
+                self.shortcuts.remove(at: index)
+            }
             self.tableView.reloadData()
             self.commitChanges()
         }
