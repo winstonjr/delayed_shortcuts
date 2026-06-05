@@ -2,11 +2,12 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="$(grep -m1 'MARKETING_VERSION' "$ROOT_DIR/DelayedShortcuts.xcodeproj/project.pbxproj" | sed 's/.*= *//;s/;//;s/ *//')"
 BUILD_ROOT="${DELAYED_SHORTCUTS_BUILD_ROOT:-$ROOT_DIR/tmp}"
-DERIVED_DATA="$BUILD_ROOT/DerivedData"
-APP_PATH="$DERIVED_DATA/Build/Products/Release/DelayedShortcuts.app"
+APP_PATH="$BUILD_ROOT/DelayedShortcuts.app"
+
+VERSION="$(grep -m1 'MARKETING_VERSION' "$ROOT_DIR/DelayedShortcuts.xcodeproj/project.pbxproj" | sed 's/.*= *//;s/;//;s/ *//')"
 PKG_PATH="$BUILD_ROOT/DelayedShortcuts-$VERSION.pkg"
+
 PKGBUILD_ARGS=(
   --identifier "com.local.DelayedShortcuts"
   --version "$VERSION"
@@ -19,7 +20,7 @@ if [[ -n "${DELAYED_SHORTCUTS_INSTALLER_SIGN_IDENTITY:-}" ]]; then
 fi
 
 "$ROOT_DIR/scripts/build.sh"
-mkdir -p "$BUILD_ROOT"
+
 /usr/bin/xattr -cr "$APP_PATH" || true
 /usr/bin/codesign --verify --strict --deep "$APP_PATH" >/dev/null
 
