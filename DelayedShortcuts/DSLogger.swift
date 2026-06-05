@@ -2,6 +2,7 @@ import Foundation
 import os
 
 // Append-only log at ~/Library/Logs/DelayedShortcuts/shortcuts.log
+// Rotates at 1 MB → renames to shortcuts.log.1 (keeps one backup).
 // Readable in Console.app (subsystem: com.local.DelayedShortcuts) or tail -f the file.
 final class DSLogger {
     static let shared = DSLogger()
@@ -12,6 +13,8 @@ final class DSLogger {
         case output   = "OUTPUT "
         case state    = "STATE  "
     }
+
+    private static let maxBytes: UInt64 = 1 * 1024 * 1024  // 1 MB
 
     private let osLog = OSLog(subsystem: "com.local.DelayedShortcuts", category: "shortcuts")
     private let writeQueue = DispatchQueue(label: "com.local.DelayedShortcuts.logger", qos: .utility)
@@ -24,12 +27,10 @@ final class DSLogger {
         return logsDir.appendingPathComponent("shortcuts.log")
     }()
 
+    private var archiveURL: URL { logURL.deletingPathExtension().appendingPathExtension("log.1") }
+
     private init() {
-        if !FileManager.default.fileExists(atPath: logURL.path) {
-            FileManager.default.createFile(atPath: logURL.path, contents: nil)
-        }
-        fileHandle = try? FileHandle(forWritingTo: logURL)
-        fileHandle?.seekToEndOfFile()
+        openFile()
     }
 
     // Call from any thread. Timestamp is captured immediately; file write is async.
@@ -38,16 +39,41 @@ final class DSLogger {
         os_log("%{public}@", log: osLog, type: .info, line)
         let data = (line + "\n").data(using: .utf8)
         writeQueue.async { [weak self] in
-            if let data { self?.fileHandle?.write(data) }
+            guard let self, let data else { return }
+            self.rotateIfNeeded()
+            self.fileHandle?.write(data)
         }
     }
 
     func logSection(_ title: String) {
-        let line = "\n──── \(title) ────"
-        let data = (line + "\n").data(using: .utf8)
+        let data = ("\n──── \(title) ────\n").data(using: .utf8)
         writeQueue.async { [weak self] in
-            if let data { self?.fileHandle?.write(data) }
+            guard let self, let data else { return }
+            self.rotateIfNeeded()
+            self.fileHandle?.write(data)
         }
+    }
+
+    // Must be called on writeQueue.
+    private func rotateIfNeeded() {
+        guard let size = fileHandle?.seekToEndOfFile(), size >= Self.maxBytes else { return }
+
+        fileHandle?.closeFile()
+        fileHandle = nil
+
+        try? FileManager.default.removeItem(at: archiveURL)
+        try? FileManager.default.moveItem(at: logURL, to: archiveURL)
+
+        openFile()
+        fileHandle?.write("──── log rotated (previous → shortcuts.log.1) ────\n".data(using: .utf8)!)
+    }
+
+    private func openFile() {
+        if !FileManager.default.fileExists(atPath: logURL.path) {
+            FileManager.default.createFile(atPath: logURL.path, contents: nil)
+        }
+        fileHandle = try? FileHandle(forWritingTo: logURL)
+        fileHandle?.seekToEndOfFile()
     }
 
     private func timestamp() -> String {
