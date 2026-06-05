@@ -17,6 +17,7 @@
 		000000000000000000000108 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000008 /* StatusMenuController.swift */; };
 		000000000000000000000109 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000011 /* main.swift */; };
 		000000000000000000000112 /* ShortcutEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000015 /* ShortcutEditorSheet.swift */; };
+		000000000000000000000113 /* DSLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000016 /* DSLogger.swift */; };
 		000000000000000000000110 /* ShortcutModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000013 /* ShortcutModelsTests.swift */; };
 		000000000000000000000111 /* ShortcutStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000014 /* ShortcutStoreTests.swift */; };
 /* End PBXBuildFile section */
@@ -47,6 +48,7 @@
 		000000000000000000000013 /* ShortcutModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutModelsTests.swift; sourceTree = "<group>"; };
 		000000000000000000000014 /* ShortcutStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutStoreTests.swift; sourceTree = "<group>"; };
 		000000000000000000000015 /* ShortcutEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutEditorSheet.swift; sourceTree = "<group>"; };
+		000000000000000000000016 /* DSLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSLogger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				000000000000000000000007 /* ShortcutListWindowController.swift */,
 				000000000000000000000008 /* StatusMenuController.swift */,
 				000000000000000000000015 /* ShortcutEditorSheet.swift */,
+				000000000000000000000016 /* DSLogger.swift */,
 				000000000000000000000009 /* Info.plist */,
 			);
 			path = DelayedShortcuts;
@@ -235,6 +238,7 @@
 				000000000000000000000108 /* StatusMenuController.swift in Sources */,
 				000000000000000000000109 /* main.swift in Sources */,
 				000000000000000000000112 /* ShortcutEditorSheet.swift in Sources */,
+				000000000000000000000113 /* DSLogger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

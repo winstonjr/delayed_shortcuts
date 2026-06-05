@@ -135,6 +135,14 @@ final class ShortcutMonitor {
             return Unmanaged.passUnretained(event)
         }
 
+        DSLogger.shared.log(
+            .trigger,
+            "INTERCEPTED \"\(shortcut.name)\"  keyCode=\(keyCode) flags=0x\(String(flags.rawValue, radix: 16))" +
+            "  → \(shortcut.outputDisplayText)" +
+            "  delay=\(shortcut.delayMilliseconds)ms step=\(shortcut.outputStepDelayMilliseconds)ms" +
+            "  consume=\(shortcut.consumeTrigger)"
+        )
+
         schedule(shortcut)
         return shortcut.consumeTrigger ? nil : Unmanaged.passUnretained(event)
     }
@@ -142,15 +150,23 @@ final class ShortcutMonitor {
     private func schedule(_ shortcut: DelayedShortcut) {
         let outputs = shortcut.outputs
         let stepDelay = shortcut.outputStepDelayMilliseconds
-        let deadline = DispatchTime.now() + .milliseconds(max(shortcut.delayMilliseconds, 0))
+        let delayMs = max(shortcut.delayMilliseconds, 0)
+        let deadline = DispatchTime.now() + .milliseconds(delayMs)
+        let name = shortcut.name
 
         triggerQueue.asyncAfter(deadline: deadline) {
+            DSLogger.shared.log(
+                .output,
+                "DISPATCH \"\(name)\"  \(outputs.count) output(s)"
+                + (delayMs > 0 ? "  (after \(delayMs)ms delay)" : "  (immediate)")
+            )
             for (index, endpoint) in outputs.enumerated() {
                 if index > 0 && stepDelay > 0 {
                     Thread.sleep(forTimeInterval: Double(stepDelay) / 1_000)
                 }
-                EventSender.send(endpoint, stepDelayMilliseconds: stepDelay)
+                EventSender.send(endpoint, stepDelayMilliseconds: stepDelay, label: "\(index + 1)/\(outputs.count)")
             }
+            DSLogger.shared.log(.output, "DONE \"\(name)\"")
         }
     }
 }
