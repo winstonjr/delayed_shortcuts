@@ -25,6 +25,8 @@ enum EventSender {
 
         DSLogger.shared.log(.output, "  [\(label)]   ↓ \(KeyLookup.displayName(for: endpoint.key)) (keyCode \(keyCode)) [main key]")
         post(keyCode: keyCode, keyDown: true, flags: endpoint.cgFlags, source: source)
+        DSLogger.shared.log(.output, "  [\(label)]   ↑ \(KeyLookup.displayName(for: endpoint.key)) released [main key]")
+        post(keyCode: keyCode, keyDown: false, flags: endpoint.cgFlags, source: source)
 
         for modifier in modifiers.reversed() {
             activeFlags.remove(modifier.cgFlag)
