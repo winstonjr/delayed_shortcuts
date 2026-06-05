@@ -17,7 +17,16 @@ final class ShortcutStore {
     private let decoder = JSONDecoder()
     private(set) var lastLoadError: Error?
 
+    private let overrideDirectoryURL: URL?
+
+    init(directoryURL: URL? = nil) {
+        self.overrideDirectoryURL = directoryURL
+    }
+
     var configURL: URL {
+        if let overrideDirectoryURL {
+            return overrideDirectoryURL.appendingPathComponent("shortcuts.json")
+        }
         let applicationSupport = FileManager.default.urls(
             for: .applicationSupportDirectory,
             in: .userDomainMask
@@ -45,11 +54,20 @@ final class ShortcutStore {
         let config = try decoder.decode(ShortcutConfig.self, from: data)
 
         if config.version < Self.currentConfigVersion {
-            try writeDefaultConfig()
-            return DelayedShortcut.defaultShortcuts
+            // Preserve user shortcuts — just bump the version on disk
+            let upgraded = ShortcutConfig(version: Self.currentConfigVersion, shortcuts: config.shortcuts)
+            try? encoder.encode(upgraded).write(to: configURL, options: .atomic)
+            return config.shortcuts
         }
 
         return config.shortcuts
+    }
+
+    func save(_ shortcuts: [DelayedShortcut]) throws {
+        try ensureConfigExists()
+        let config = ShortcutConfig(version: Self.currentConfigVersion, shortcuts: shortcuts)
+        let data = try encoder.encode(config)
+        try data.write(to: configURL, options: .atomic)
     }
 
     func ensureConfigExists() throws {

@@ -140,14 +140,17 @@ final class ShortcutMonitor {
     }
 
     private func schedule(_ shortcut: DelayedShortcut) {
-        let endpoint = shortcut.output
+        let outputs = shortcut.outputs
+        let stepDelay = shortcut.outputStepDelayMilliseconds
         let deadline = DispatchTime.now() + .milliseconds(max(shortcut.delayMilliseconds, 0))
 
         triggerQueue.asyncAfter(deadline: deadline) {
-            EventSender.send(
-                endpoint,
-                stepDelayMilliseconds: shortcut.outputStepDelayMilliseconds
-            )
+            for (index, endpoint) in outputs.enumerated() {
+                if index > 0 && stepDelay > 0 {
+                    Thread.sleep(forTimeInterval: Double(stepDelay) / 1_000)
+                }
+                EventSender.send(endpoint, stepDelayMilliseconds: stepDelay)
+            }
         }
     }
 }

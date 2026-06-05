@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-VERSION="0.1.0"
+VERSION="$(grep -m1 'MARKETING_VERSION' "$ROOT_DIR/DelayedShortcuts.xcodeproj/project.pbxproj" | sed 's/.*= *//;s/;//;s/ *//')"
 BUILD_ROOT="${DELAYED_SHORTCUTS_BUILD_ROOT:-$ROOT_DIR/tmp}"
 DERIVED_DATA="$BUILD_ROOT/DerivedData"
 APP_PATH="$DERIVED_DATA/Build/Products/Release/DelayedShortcuts.app"

@@ -22,6 +22,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return UserDefaults.standard.bool(forKey: listeningEnabledKey)
     }()
 
+    private var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard acquireSingleInstanceLock() else {
             exit(EXIT_SUCCESS)
@@ -38,6 +42,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         wireMenuCallbacks(menuController)
         menuController.setShortcuts(shortcuts)
         shortcutListWindowController.update(shortcuts: shortcuts)
+        shortcutListWindowController.onSave = { [weak self] updated in
+            self?.applyShortcuts(updated)
+        }
 
         refreshReadiness()
 
@@ -169,6 +176,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func requestInitialPermissionsIfNeeded() {
+        guard !isRunningTests else { return }
         let state = PermissionManager.currentState()
         guard !state.isReady else {
             return
@@ -200,6 +208,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let permissionState = PermissionManager.currentState()
         menuController?.setPermissionState(permissionState)
 
+        if permissionState.isReady {
+            permissionTimer?.invalidate()
+            permissionTimer = nil
+        }
+
         guard permissionState.isReady, wantsListening else {
             monitor.stop()
             menuController?.setListening(false)
@@ -222,6 +235,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             showAlert(
                 message: "Could not reload shortcuts",
                 informativeText: "The config file has invalid JSON or unsupported shortcut data. The current in-memory shortcuts were kept.\n\n\(error.localizedDescription)"
+            )
+        }
+    }
+
+    func applyShortcuts(_ updated: [DelayedShortcut]) {
+        do {
+            try shortcutStore.save(updated)
+            shortcuts = updated
+            monitor.updateShortcuts(shortcuts)
+            menuController?.setShortcuts(shortcuts)
+            shortcutListWindowController.update(shortcuts: shortcuts)
+            refreshReadiness()
+        } catch {
+            showAlert(
+                message: "Could not save shortcuts",
+                informativeText: error.localizedDescription
             )
         }
     }

@@ -131,7 +131,7 @@ final class StatusMenuController: NSObject {
 
         for shortcut in shortcuts {
             let enabledText = shortcut.enabled ? "On" : "Off"
-            let title = "\(enabledText) \(shortcut.name): \(shortcut.trigger.displayText) => \(shortcut.output.displayText) (\(shortcut.delayDisplayText))"
+            let title = "\(enabledText) \(shortcut.name): \(shortcut.trigger.displayText) => \(shortcut.outputDisplayText) (\(shortcut.delayDisplayText))"
             let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
             item.isEnabled = false
             shortcutsSubmenu.addItem(item)
