@@ -29,7 +29,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard acquireSingleInstanceLock() else {
             exit(EXIT_SUCCESS)
-            return
         }
 
         NSApp.setActivationPolicy(.accessory)
