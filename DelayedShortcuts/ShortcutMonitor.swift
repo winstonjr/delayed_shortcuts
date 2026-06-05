@@ -76,6 +76,7 @@ final class ShortcutMonitor {
 
     private func createEventTap() -> Bool {
         let mask = (CGEventMask(1) << CGEventType.keyDown.rawValue)
+            | (CGEventMask(1) << CGEventType.keyUp.rawValue)
             | (CGEventMask(1) << CGEventType.tapDisabledByTimeout.rawValue)
             | (CGEventMask(1) << CGEventType.tapDisabledByUserInput.rawValue)
 
@@ -116,7 +117,7 @@ final class ShortcutMonitor {
             return Unmanaged.passUnretained(event)
         }
 
-        guard isRunning && type == .keyDown else {
+        guard isRunning && (type == .keyDown || type == .keyUp) else {
             return Unmanaged.passUnretained(event)
         }
 
@@ -124,12 +125,22 @@ final class ShortcutMonitor {
             return Unmanaged.passUnretained(event)
         }
 
-        guard event.getIntegerValueField(.keyboardEventAutorepeat) == 0 else {
+        let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
+        let flags = event.flags.intersection(.shortcutModifierMask)
+
+        // For keyUp: silently consume if the trigger shortcut has consumeTrigger set,
+        // so nothing downstream (e.g. AeroSpace) ever sees the trigger release.
+        if type == .keyUp {
+            if let shortcut = shortcuts.first(where: { $0.consumeTrigger && $0.trigger.keyCode == keyCode && $0.trigger.cgFlags == flags }) {
+                DSLogger.shared.log(.trigger, "CONSUMED keyUp for \"\(shortcut.name)\"")
+                return nil
+            }
             return Unmanaged.passUnretained(event)
         }
 
-        let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
-        let flags = event.flags.intersection(.shortcutModifierMask)
+        guard event.getIntegerValueField(.keyboardEventAutorepeat) == 0 else {
+            return Unmanaged.passUnretained(event)
+        }
 
         guard let shortcut = shortcuts.first(where: { $0.matches(keyCode: keyCode, flags: flags) }) else {
             return Unmanaged.passUnretained(event)
