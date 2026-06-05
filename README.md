@@ -69,6 +69,14 @@ The installer package is written to:
 /Users/winston/projects/delayed_shortcuts/tmp/DelayedShortcuts-0.1.0.pkg
 ```
 
+To install the package, double-click the `.pkg` file, or use the CLI to avoid GUI issues:
+
+```bash
+sudo installer -pkg tmp/DelayedShortcuts-0.1.0.pkg -target /
+```
+
+If the GUI installer shows "Waiting for other installations to complete...", force-quit it and use the command above instead.
+
 For installing on other computers without warning dialogs, sign and notarize the app and package with a Developer ID certificate. The project currently uses local ad-hoc signing so it can build on this machine without Xcode UI setup.
 
 To sign the installer package, set `DELAYED_SHORTCUTS_INSTALLER_SIGN_IDENTITY` to a Developer ID Installer identity before running `./scripts/package.sh`.
