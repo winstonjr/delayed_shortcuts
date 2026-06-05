@@ -19,6 +19,7 @@ final class StatusMenuController: NSObject {
     private let shortcutsMenuItem = NSMenuItem(title: "Configured Shortcuts", action: nil, keyEquivalent: "")
     private let shortcutsSubmenu = NSMenu()
     private let openConfigItem = NSMenuItem(title: "Open Config File", action: #selector(openConfig), keyEquivalent: "")
+    private let openLogItem = NSMenuItem(title: "Open Log File", action: #selector(openLog), keyEquivalent: "")
     private let reloadConfigItem = NSMenuItem(title: "Reload Config", action: #selector(reloadConfig), keyEquivalent: "")
     private let quitItem = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
 
@@ -84,6 +85,7 @@ final class StatusMenuController: NSObject {
         requestPermissionsItem.target = self
         showShortcutsItem.target = self
         openConfigItem.target = self
+        openLogItem.target = self
         reloadConfigItem.target = self
         quitItem.target = self
         shortcutsMenuItem.submenu = shortcutsSubmenu
@@ -98,6 +100,7 @@ final class StatusMenuController: NSObject {
         menu.addItem(shortcutsMenuItem)
         menu.addItem(.separator())
         menu.addItem(openConfigItem)
+        menu.addItem(openLogItem)
         menu.addItem(reloadConfigItem)
         menu.addItem(.separator())
         menu.addItem(quitItem)
@@ -131,7 +134,7 @@ final class StatusMenuController: NSObject {
 
         for shortcut in shortcuts {
             let enabledText = shortcut.enabled ? "On" : "Off"
-            let title = "\(enabledText) \(shortcut.name): \(shortcut.trigger.displayText) => \(shortcut.output.displayText) (\(shortcut.delayDisplayText))"
+            let title = "\(enabledText) \(shortcut.name): \(shortcut.trigger.displayText) => \(shortcut.outputDisplayText) (\(shortcut.delayDisplayText))"
             let item = NSMenuItem(title: title, action: nil, keyEquivalent: "")
             item.isEnabled = false
             shortcutsSubmenu.addItem(item)
@@ -152,6 +155,10 @@ final class StatusMenuController: NSObject {
 
     @objc private func openConfig() {
         onOpenConfig?()
+    }
+
+    @objc private func openLog() {
+        NSWorkspace.shared.activateFileViewerSelecting([DSLogger.shared.logURL])
     }
 
     @objc private func reloadConfig() {

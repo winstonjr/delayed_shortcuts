@@ -1,257 +1,101 @@
 {
+  "version" : 2,
   "shortcuts" : [
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-1",
-      "name" : "Alternative Command 1",
-      "output" : {
-        "key" : "1",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "1",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-bang-to-option-1",
+      "name" : "Hyper ! to Option 1",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "1", "modifiers" : [ "option" ] }
+      ],
+      "trigger" : { "key" : "!", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-2",
-      "name" : "Alternative Command 2",
-      "output" : {
-        "key" : "2",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "2",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-at-to-option-2",
+      "name" : "Hyper @ to Option 2",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "2", "modifiers" : [ "option" ] }
+      ],
+      "trigger" : { "key" : "@", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-3",
-      "name" : "Alternative Command 3",
-      "output" : {
-        "key" : "3",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "3",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-backslash-to-option-3",
+      "name" : "Hyper Backslash to Option 3",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "3", "modifiers" : [ "option" ] }
+      ],
+      "trigger" : { "key" : "\\", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-4",
-      "name" : "Alternative Command 4",
-      "output" : {
-        "key" : "4",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "4",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-dollar-to-option-q",
+      "name" : "Hyper $ to Option Q",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "q", "modifiers" : [ "option" ] }
+      ],
+      "trigger" : { "key" : "$", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-5",
-      "name" : "Alternative Command 5",
-      "output" : {
-        "key" : "5",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "5",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-percent-to-option-w",
+      "name" : "Hyper % to Option W",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "w", "modifiers" : [ "option" ] }
+      ],
+      "trigger" : { "key" : "%", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-6",
-      "name" : "Alternative Command 6",
-      "output" : {
-        "key" : "6",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "6",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-ampersand-to-option-e",
+      "name" : "Hyper & to Option E",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "e", "modifiers" : [ "option" ] }
+      ],
+      "trigger" : { "key" : "&", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-7",
-      "name" : "Alternative Command 7",
-      "output" : {
-        "key" : "7",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "7",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-asterisk-to-option-shift-l",
+      "name" : "Hyper * to Option Shift L",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "l", "modifiers" : [ "option", "shift" ] }
+      ],
+      "trigger" : { "key" : "*", "modifiers" : [ "control", "option", "command", "shift" ] }
     },
     {
       "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
+      "delayMilliseconds" : 0,
       "enabled" : true,
-      "id" : "alternative-command-8",
-      "name" : "Alternative Command 8",
-      "output" : {
-        "key" : "8",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "8",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
-    },
-    {
-      "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
-      "enabled" : true,
-      "id" : "alternative-command-9",
-      "name" : "Alternative Command 9",
-      "output" : {
-        "key" : "9",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "9",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
-    },
-    {
-      "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
-      "enabled" : true,
-      "id" : "alternative-command-0",
-      "name" : "Alternative Command 0",
-      "output" : {
-        "key" : "0",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "0",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
-    },
-    {
-      "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
-      "enabled" : true,
-      "id" : "alternative-command-minus",
-      "name" : "Alternative Command Minus",
-      "output" : {
-        "key" : "-",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "-",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
-    },
-    {
-      "consumeTrigger" : true,
-      "delayMilliseconds" : 250,
-      "enabled" : true,
-      "id" : "alternative-command-equals",
-      "name" : "Alternative Command Equals",
-      "output" : {
-        "key" : "=",
-        "modifiers" : [
-          "command"
-        ]
-      },
-      "trigger" : {
-        "key" : "=",
-        "modifiers" : [
-          "control",
-          "option",
-          "command"
-        ]
-      }
+      "id" : "hyper-left-paren-to-option-shift-h",
+      "name" : "Hyper ( to Option Shift H",
+      "outputStepDelayMilliseconds" : 250,
+      "outputs" : [
+        { "key" : "h", "modifiers" : [ "option", "shift" ] }
+      ],
+      "trigger" : { "key" : "(", "modifiers" : [ "control", "option", "command", "shift" ] }
     }
-  ],
-  "version" : 1
+  ]
 }

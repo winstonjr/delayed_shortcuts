@@ -93,7 +93,7 @@ struct DelayedShortcut: Codable, Identifiable, Hashable {
     var id: String
     var name: String
     var trigger: ShortcutEndpoint
-    var output: ShortcutEndpoint
+    var outputs: [ShortcutEndpoint]
     var delayMilliseconds: Int
     var outputStepDelayMilliseconds: Int
     var enabled: Bool
@@ -103,11 +103,32 @@ struct DelayedShortcut: Codable, Identifiable, Hashable {
         case id
         case name
         case trigger
-        case output
+        case outputs
+        case legacyOutput = "output"
         case delayMilliseconds
         case outputStepDelayMilliseconds
         case enabled
         case consumeTrigger
+    }
+
+    init(
+        id: String,
+        name: String,
+        trigger: ShortcutEndpoint,
+        outputs: [ShortcutEndpoint],
+        delayMilliseconds: Int,
+        outputStepDelayMilliseconds: Int = 0,
+        enabled: Bool = true,
+        consumeTrigger: Bool = true
+    ) {
+        self.id = id
+        self.name = name
+        self.trigger = trigger
+        self.outputs = outputs
+        self.delayMilliseconds = delayMilliseconds
+        self.outputStepDelayMilliseconds = outputStepDelayMilliseconds
+        self.enabled = enabled
+        self.consumeTrigger = consumeTrigger
     }
 
     init(
@@ -120,14 +141,16 @@ struct DelayedShortcut: Codable, Identifiable, Hashable {
         enabled: Bool = true,
         consumeTrigger: Bool = true
     ) {
-        self.id = id
-        self.name = name
-        self.trigger = trigger
-        self.output = output
-        self.delayMilliseconds = delayMilliseconds
-        self.outputStepDelayMilliseconds = outputStepDelayMilliseconds
-        self.enabled = enabled
-        self.consumeTrigger = consumeTrigger
+        self.init(
+            id: id,
+            name: name,
+            trigger: trigger,
+            outputs: [output],
+            delayMilliseconds: delayMilliseconds,
+            outputStepDelayMilliseconds: outputStepDelayMilliseconds,
+            enabled: enabled,
+            consumeTrigger: consumeTrigger
+        )
     }
 
     init(from decoder: Decoder) throws {
@@ -135,7 +158,15 @@ struct DelayedShortcut: Codable, Identifiable, Hashable {
         id = try container.decode(String.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         trigger = try container.decode(ShortcutEndpoint.self, forKey: .trigger)
-        output = try container.decode(ShortcutEndpoint.self, forKey: .output)
+
+        if let outputsArray = try container.decodeIfPresent([ShortcutEndpoint].self, forKey: .outputs) {
+            outputs = outputsArray
+        } else if let single = try container.decodeIfPresent(ShortcutEndpoint.self, forKey: .legacyOutput) {
+            outputs = [single]
+        } else {
+            outputs = []
+        }
+
         delayMilliseconds = try container.decode(Int.self, forKey: .delayMilliseconds)
         outputStepDelayMilliseconds = try container.decodeIfPresent(
             Int.self,
@@ -145,12 +176,28 @@ struct DelayedShortcut: Codable, Identifiable, Hashable {
         consumeTrigger = try container.decodeIfPresent(Bool.self, forKey: .consumeTrigger) ?? true
     }
 
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(trigger, forKey: .trigger)
+        try container.encode(outputs, forKey: .outputs)
+        try container.encode(delayMilliseconds, forKey: .delayMilliseconds)
+        try container.encode(outputStepDelayMilliseconds, forKey: .outputStepDelayMilliseconds)
+        try container.encode(enabled, forKey: .enabled)
+        try container.encode(consumeTrigger, forKey: .consumeTrigger)
+    }
+
     var isValid: Bool {
-        trigger.keyCode != nil && output.keyCode != nil
+        trigger.keyCode != nil && !outputs.isEmpty && outputs.allSatisfy { $0.keyCode != nil }
     }
 
     func matches(keyCode: CGKeyCode, flags: CGEventFlags) -> Bool {
         enabled && trigger.keyCode == keyCode && trigger.cgFlags == flags
+    }
+
+    var outputDisplayText: String {
+        outputs.map(\.displayText).joined(separator: " → ")
     }
 
     var delayDisplayText: String {
@@ -158,11 +205,11 @@ struct DelayedShortcut: Codable, Identifiable, Hashable {
         case (0, 0):
             return "0 ms"
         case (0, let stepDelay):
-            return "\(stepDelay) ms between output steps"
+            return "\(stepDelay) ms between steps"
         case (let startDelay, 0):
             return "\(startDelay) ms before output"
         case (let startDelay, let stepDelay):
-            return "\(startDelay) ms before output, \(stepDelay) ms between output steps"
+            return "\(startDelay) ms before, \(stepDelay) ms between steps"
         }
     }
 }
@@ -387,5 +434,9 @@ enum KeyLookup {
             return displayName
         }
         return normalizedKey.uppercased()
+    }
+
+    static var allKeys: [String] {
+        Array(keyCodes.keys).sorted()
     }
 }

@@ -22,6 +22,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         return UserDefaults.standard.bool(forKey: listeningEnabledKey)
     }()
 
+    private var isRunningTests: Bool {
+        ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    }
+
     func applicationDidFinishLaunching(_ notification: Notification) {
         guard acquireSingleInstanceLock() else {
             exit(EXIT_SUCCESS)
@@ -31,6 +35,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSApp.setActivationPolicy(.accessory)
 
         shortcuts = shortcutStore.loadOrInstallDefaults()
+        DSLogger.shared.logSection("App started — initial config")
+        logShortcuts(shortcuts, reason: "initial load")
         monitor.updateShortcuts(shortcuts)
 
         let menuController = StatusMenuController()
@@ -38,6 +44,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         wireMenuCallbacks(menuController)
         menuController.setShortcuts(shortcuts)
         shortcutListWindowController.update(shortcuts: shortcuts)
+        shortcutListWindowController.onSave = { [weak self] updated in
+            self?.applyShortcuts(updated)
+        }
 
         refreshReadiness()
 
@@ -169,6 +178,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func requestInitialPermissionsIfNeeded() {
+        guard !isRunningTests else { return }
         let state = PermissionManager.currentState()
         guard !state.isReady else {
             return
@@ -200,20 +210,34 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         let permissionState = PermissionManager.currentState()
         menuController?.setPermissionState(permissionState)
 
+        if permissionState.isReady {
+            permissionTimer?.invalidate()
+            permissionTimer = nil
+        }
+
         guard permissionState.isReady, wantsListening else {
+            if monitor.isRunning {
+                DSLogger.shared.log(.state, "Listening stopped — permissions=\(permissionState.summary) wantsListening=\(wantsListening)")
+            }
             monitor.stop()
             menuController?.setListening(false)
             return
         }
 
         monitor.updateShortcuts(shortcuts)
+        let wasRunning = monitor.isRunning
         let started = monitor.start()
+        if started && !wasRunning {
+            DSLogger.shared.log(.state, "Listening started — \(shortcuts.filter(\.enabled).count) active shortcut(s)")
+        }
         menuController?.setListening(started)
     }
 
     private func reloadShortcuts() {
         do {
             shortcuts = try shortcutStore.loadShortcuts()
+            DSLogger.shared.logSection("Config reloaded from disk")
+            logShortcuts(shortcuts, reason: "reload")
             monitor.updateShortcuts(shortcuts)
             menuController?.setShortcuts(shortcuts)
             shortcutListWindowController.update(shortcuts: shortcuts)
@@ -223,6 +247,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
                 message: "Could not reload shortcuts",
                 informativeText: "The config file has invalid JSON or unsupported shortcut data. The current in-memory shortcuts were kept.\n\n\(error.localizedDescription)"
             )
+        }
+    }
+
+    func applyShortcuts(_ updated: [DelayedShortcut]) {
+        do {
+            try shortcutStore.save(updated)
+            DSLogger.shared.logSection("Config saved by in-app editor")
+            logShortcuts(updated, reason: "in-app save")
+            shortcuts = updated
+            monitor.updateShortcuts(shortcuts)
+            menuController?.setShortcuts(shortcuts)
+            shortcutListWindowController.update(shortcuts: shortcuts)
+            refreshReadiness()
+        } catch {
+            showAlert(
+                message: "Could not save shortcuts",
+                informativeText: error.localizedDescription
+            )
+        }
+    }
+
+    private func logShortcuts(_ shortcuts: [DelayedShortcut], reason: String) {
+        let log = DSLogger.shared
+        log.log(.config, "Shortcut count: \(shortcuts.count)  reason=\(reason)")
+        for s in shortcuts {
+            let outputs = s.outputDisplayText
+            let delays = s.delayDisplayText
+            let flags = "enabled=\(s.enabled) consume=\(s.consumeTrigger)"
+            log.log(.config, "  [\(s.id)]  \(s.trigger.displayText) → \(outputs)  \(delays)  \(flags)")
         }
     }
 

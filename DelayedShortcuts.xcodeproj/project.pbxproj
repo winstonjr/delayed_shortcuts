@@ -16,7 +16,21 @@
 		000000000000000000000107 /* ShortcutListWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000007 /* ShortcutListWindowController.swift */; };
 		000000000000000000000108 /* StatusMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000008 /* StatusMenuController.swift */; };
 		000000000000000000000109 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000011 /* main.swift */; };
+		000000000000000000000112 /* ShortcutEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000015 /* ShortcutEditorSheet.swift */; };
+		000000000000000000000113 /* DSLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000016 /* DSLogger.swift */; };
+		000000000000000000000110 /* ShortcutModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000013 /* ShortcutModelsTests.swift */; };
+		000000000000000000000111 /* ShortcutStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000014 /* ShortcutStoreTests.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		000000000000000000000901 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 000000000000000000000501 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 000000000000000000000401;
+			remoteInfo = DelayedShortcuts;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		000000000000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -30,10 +44,22 @@
 		000000000000000000000009 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		000000000000000000000010 /* DelayedShortcuts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DelayedShortcuts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		000000000000000000000011 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		000000000000000000000012 /* DelayedShortcutsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DelayedShortcutsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		000000000000000000000013 /* ShortcutModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutModelsTests.swift; sourceTree = "<group>"; };
+		000000000000000000000014 /* ShortcutStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutStoreTests.swift; sourceTree = "<group>"; };
+		000000000000000000000015 /* ShortcutEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutEditorSheet.swift; sourceTree = "<group>"; };
+		000000000000000000000016 /* DSLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSLogger.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000000000201 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000202 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -47,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000302 /* DelayedShortcuts */,
+				000000000000000000000304 /* DelayedShortcutsTests */,
 				000000000000000000000303 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -63,6 +90,8 @@
 				000000000000000000000006 /* ShortcutMonitor.swift */,
 				000000000000000000000007 /* ShortcutListWindowController.swift */,
 				000000000000000000000008 /* StatusMenuController.swift */,
+				000000000000000000000015 /* ShortcutEditorSheet.swift */,
+				000000000000000000000016 /* DSLogger.swift */,
 				000000000000000000000009 /* Info.plist */,
 			);
 			path = DelayedShortcuts;
@@ -72,8 +101,18 @@
 			isa = PBXGroup;
 			children = (
 				000000000000000000000010 /* DelayedShortcuts.app */,
+				000000000000000000000012 /* DelayedShortcutsTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		000000000000000000000304 /* DelayedShortcutsTests */ = {
+			isa = PBXGroup;
+			children = (
+				000000000000000000000013 /* ShortcutModelsTests.swift */,
+				000000000000000000000014 /* ShortcutStoreTests.swift */,
+			);
+			path = DelayedShortcutsTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -97,6 +136,23 @@
 			productReference = 000000000000000000000010 /* DelayedShortcuts.app */;
 			productType = "com.apple.product-type.application";
 		};
+		000000000000000000000402 /* DelayedShortcutsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 000000000000000000000703 /* Build configuration list for PBXNativeTarget "DelayedShortcutsTests" */;
+			buildPhases = (
+				000000000000000000000604 /* Sources */,
+				000000000000000000000202 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				000000000000000000000902 /* PBXTargetDependency */,
+			);
+			name = DelayedShortcutsTests;
+			productName = DelayedShortcutsTests;
+			productReference = 000000000000000000000012 /* DelayedShortcutsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -109,6 +165,10 @@
 				TargetAttributes = {
 					000000000000000000000401 = {
 						CreatedOnToolsVersion = 26.3;
+					};
+					000000000000000000000402 = {
+						CreatedOnToolsVersion = 26.3;
+						TestTargetID = 000000000000000000000401;
 					};
 				};
 			};
@@ -126,6 +186,7 @@
 			projectRoot = "";
 			targets = (
 				000000000000000000000401 /* DelayedShortcuts */,
+				000000000000000000000402 /* DelayedShortcutsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -176,10 +237,29 @@
 				000000000000000000000107 /* ShortcutListWindowController.swift in Sources */,
 				000000000000000000000108 /* StatusMenuController.swift in Sources */,
 				000000000000000000000109 /* main.swift in Sources */,
+				000000000000000000000112 /* ShortcutEditorSheet.swift in Sources */,
+				000000000000000000000113 /* DSLogger.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		000000000000000000000604 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				000000000000000000000110 /* ShortcutModelsTests.swift in Sources */,
+				000000000000000000000111 /* ShortcutStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		000000000000000000000902 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 000000000000000000000401 /* DelayedShortcuts */;
+			targetProxy = 000000000000000000000901 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		000000000000000000000801 /* Debug */ = {
@@ -348,6 +428,50 @@
 			};
 			name = Release;
 		};
+		000000000000000000000805 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.DelayedShortcutsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DelayedShortcuts.app/Contents/MacOS/DelayedShortcuts";
+			};
+			name = Debug;
+		};
+		000000000000000000000806 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.local.DelayedShortcutsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DelayedShortcuts.app/Contents/MacOS/DelayedShortcuts";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -365,6 +489,15 @@
 			buildConfigurations = (
 				000000000000000000000801 /* Debug */,
 				000000000000000000000802 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		000000000000000000000703 /* Build configuration list for PBXNativeTarget "DelayedShortcutsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				000000000000000000000805 /* Debug */,
+				000000000000000000000806 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -76,6 +76,7 @@ final class ShortcutMonitor {
 
     private func createEventTap() -> Bool {
         let mask = (CGEventMask(1) << CGEventType.keyDown.rawValue)
+            | (CGEventMask(1) << CGEventType.keyUp.rawValue)
             | (CGEventMask(1) << CGEventType.tapDisabledByTimeout.rawValue)
             | (CGEventMask(1) << CGEventType.tapDisabledByUserInput.rawValue)
 
@@ -116,7 +117,7 @@ final class ShortcutMonitor {
             return Unmanaged.passUnretained(event)
         }
 
-        guard isRunning && type == .keyDown else {
+        guard isRunning && (type == .keyDown || type == .keyUp) else {
             return Unmanaged.passUnretained(event)
         }
 
@@ -124,30 +125,59 @@ final class ShortcutMonitor {
             return Unmanaged.passUnretained(event)
         }
 
+        let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
+        let flags = event.flags.intersection(.shortcutModifierMask)
+
+        // For keyUp: silently consume if the trigger shortcut has consumeTrigger set,
+        // so nothing downstream (e.g. AeroSpace) ever sees the trigger release.
+        if type == .keyUp {
+            if let shortcut = shortcuts.first(where: { $0.consumeTrigger && $0.trigger.keyCode == keyCode && $0.trigger.cgFlags == flags }) {
+                DSLogger.shared.log(.trigger, "CONSUMED keyUp for \"\(shortcut.name)\"")
+                return nil
+            }
+            return Unmanaged.passUnretained(event)
+        }
+
         guard event.getIntegerValueField(.keyboardEventAutorepeat) == 0 else {
             return Unmanaged.passUnretained(event)
         }
 
-        let keyCode = CGKeyCode(event.getIntegerValueField(.keyboardEventKeycode))
-        let flags = event.flags.intersection(.shortcutModifierMask)
-
         guard let shortcut = shortcuts.first(where: { $0.matches(keyCode: keyCode, flags: flags) }) else {
             return Unmanaged.passUnretained(event)
         }
+
+        DSLogger.shared.log(
+            .trigger,
+            "INTERCEPTED \"\(shortcut.name)\"  keyCode=\(keyCode) flags=0x\(String(flags.rawValue, radix: 16))" +
+            "  → \(shortcut.outputDisplayText)" +
+            "  delay=\(shortcut.delayMilliseconds)ms step=\(shortcut.outputStepDelayMilliseconds)ms" +
+            "  consume=\(shortcut.consumeTrigger)"
+        )
 
         schedule(shortcut)
         return shortcut.consumeTrigger ? nil : Unmanaged.passUnretained(event)
     }
 
     private func schedule(_ shortcut: DelayedShortcut) {
-        let endpoint = shortcut.output
-        let deadline = DispatchTime.now() + .milliseconds(max(shortcut.delayMilliseconds, 0))
+        let outputs = shortcut.outputs
+        let stepDelay = shortcut.outputStepDelayMilliseconds
+        let delayMs = max(shortcut.delayMilliseconds, 0)
+        let deadline = DispatchTime.now() + .milliseconds(delayMs)
+        let name = shortcut.name
 
         triggerQueue.asyncAfter(deadline: deadline) {
-            EventSender.send(
-                endpoint,
-                stepDelayMilliseconds: shortcut.outputStepDelayMilliseconds
+            DSLogger.shared.log(
+                .output,
+                "DISPATCH \"\(name)\"  \(outputs.count) output(s)"
+                + (delayMs > 0 ? "  (after \(delayMs)ms delay)" : "  (immediate)")
             )
+            for (index, endpoint) in outputs.enumerated() {
+                if index > 0 && stepDelay > 0 {
+                    Thread.sleep(forTimeInterval: Double(stepDelay) / 1_000)
+                }
+                EventSender.send(endpoint, stepDelayMilliseconds: stepDelay, label: "\(index + 1)/\(outputs.count)")
+            }
+            DSLogger.shared.log(.output, "DONE \"\(name)\"")
         }
     }
 }
