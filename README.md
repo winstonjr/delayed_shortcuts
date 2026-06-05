@@ -20,14 +20,14 @@ The default shortcuts are:
 
 | Trigger | Output | Output step delay |
 | --- | --- | --- |
-| `Ctrl+Opt+Cmd+Shift+!` | `Opt+1` | `250 ms` between `Opt` and `1` |
-| `Ctrl+Opt+Cmd+Shift+@` | `Opt+2` | `250 ms` between `Opt` and `2` |
-| `Ctrl+Opt+Cmd+Shift+\` | `Opt+3` | `250 ms` between `Opt` and `3` |
-| `Ctrl+Opt+Cmd+Shift+$` | `Opt+Q` | `250 ms` between `Opt` and `Q` |
-| `Ctrl+Opt+Cmd+Shift+%` | `Opt+W` | `250 ms` between `Opt` and `W` |
-| `Ctrl+Opt+Cmd+Shift+&` | `Opt+E` | `250 ms` between `Opt` and `E` |
-| `Ctrl+Opt+Cmd+Shift+*` | `Opt+Shift+L` | `250 ms` between `Opt`, `Shift`, and `L` |
-| `Ctrl+Opt+Cmd+Shift+(` | `Opt+Shift+H` | `250 ms` between `Opt`, `Shift`, and `H` |
+| `Ctrl+Opt+Cmd+Shift+!` | `Opt+1` | `151 ms` between `Opt` and `1` |
+| `Ctrl+Opt+Cmd+Shift+@` | `Opt+2` | `151 ms` between `Opt` and `2` |
+| `Ctrl+Opt+Cmd+Shift+\` | `Opt+3` | `151 ms` between `Opt` and `3` |
+| `Ctrl+Opt+Cmd+Shift+$` | `Opt+Q` | `151 ms` between `Opt` and `Q` |
+| `Ctrl+Opt+Cmd+Shift+%` | `Opt+W` | `151 ms` between `Opt` and `W` |
+| `Ctrl+Opt+Cmd+Shift+&` | `Opt+E` | `151 ms` between `Opt` and `E` |
+| `Ctrl+Opt+Cmd+Shift+*` | `Opt+Shift+L` | `150 ms` between `Opt`, `Shift`, and `L` |
+| `Ctrl+Opt+Cmd+Shift+(` | `Opt+Shift+H` | `150 ms` between `Opt`, `Shift`, and `H` |
 
 Each one consumes the trigger. Existing version `1` config files are migrated to this table automatically.
 
