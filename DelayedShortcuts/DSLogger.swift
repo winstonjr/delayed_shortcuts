@@ -14,7 +14,8 @@ final class DSLogger {
         case state    = "STATE  "
     }
 
-    private static let maxBytes: UInt64 = 1 * 1024 * 1024  // 1 MB
+    private static let maxBytes: UInt64 = 1 * 1024 * 1024   // 1 MB per file
+    private static let maxBackups: Int  = 4                 // + current = 5 files = 5 MB total
 
     private let osLog = OSLog(subsystem: "com.local.DelayedShortcuts", category: "shortcuts")
     private let writeQueue = DispatchQueue(label: "com.local.DelayedShortcuts.logger", qos: .utility)
@@ -27,7 +28,9 @@ final class DSLogger {
         return logsDir.appendingPathComponent("shortcuts.log")
     }()
 
-    private var archiveURL: URL { logURL.deletingPathExtension().appendingPathExtension("log.1") }
+    private func archiveURL(_ n: Int) -> URL {
+        logURL.deletingPathExtension().appendingPathExtension("log.\(n)")
+    }
 
     private init() {
         openFile()
@@ -61,11 +64,15 @@ final class DSLogger {
         fileHandle?.closeFile()
         fileHandle = nil
 
-        try? FileManager.default.removeItem(at: archiveURL)
-        try? FileManager.default.moveItem(at: logURL, to: archiveURL)
+        // Drop the oldest backup, then shift .3→.4, .2→.3, .1→.2, current→.1
+        try? FileManager.default.removeItem(at: archiveURL(Self.maxBackups))
+        for n in stride(from: Self.maxBackups - 1, through: 1, by: -1) {
+            try? FileManager.default.moveItem(at: archiveURL(n), to: archiveURL(n + 1))
+        }
+        try? FileManager.default.moveItem(at: logURL, to: archiveURL(1))
 
         openFile()
-        fileHandle?.write("──── log rotated (previous → shortcuts.log.1) ────\n".data(using: .utf8)!)
+        fileHandle?.write("──── log rotated (keeping \(Self.maxBackups) backups) ────\n".data(using: .utf8)!)
     }
 
     private func openFile() {
