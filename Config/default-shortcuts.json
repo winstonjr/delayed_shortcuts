@@ -1,0 +1,257 @@
+{
+  "shortcuts" : [
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-1",
+      "name" : "Alternative Command 1",
+      "output" : {
+        "key" : "1",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "1",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-2",
+      "name" : "Alternative Command 2",
+      "output" : {
+        "key" : "2",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "2",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-3",
+      "name" : "Alternative Command 3",
+      "output" : {
+        "key" : "3",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "3",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-4",
+      "name" : "Alternative Command 4",
+      "output" : {
+        "key" : "4",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "4",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-5",
+      "name" : "Alternative Command 5",
+      "output" : {
+        "key" : "5",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "5",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-6",
+      "name" : "Alternative Command 6",
+      "output" : {
+        "key" : "6",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "6",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-7",
+      "name" : "Alternative Command 7",
+      "output" : {
+        "key" : "7",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "7",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-8",
+      "name" : "Alternative Command 8",
+      "output" : {
+        "key" : "8",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "8",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-9",
+      "name" : "Alternative Command 9",
+      "output" : {
+        "key" : "9",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "9",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-0",
+      "name" : "Alternative Command 0",
+      "output" : {
+        "key" : "0",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "0",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-minus",
+      "name" : "Alternative Command Minus",
+      "output" : {
+        "key" : "-",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "-",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    },
+    {
+      "consumeTrigger" : true,
+      "delayMilliseconds" : 250,
+      "enabled" : true,
+      "id" : "alternative-command-equals",
+      "name" : "Alternative Command Equals",
+      "output" : {
+        "key" : "=",
+        "modifiers" : [
+          "command"
+        ]
+      },
+      "trigger" : {
+        "key" : "=",
+        "modifiers" : [
+          "control",
+          "option",
+          "command"
+        ]
+      }
+    }
+  ],
+  "version" : 1
+}

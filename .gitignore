@@ -1,0 +1,5 @@
+build/
+DerivedData/
+tmp/
+.DS_Store
+*.xcuserstate
